@@ -1,64 +1,52 @@
-// Assignment Code
+// Variables assigned to the element id of '#generate' and '#password'
+// Password criteria include the follwoing characters: lower case, upper case, numerical, and special character
 var generateBtn = document.querySelector("#generate");
+var upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+var lower = "abcdefghijklmnopqrstuvwxyz";
+var numbers = "0123456789";
+var special = "!@,#$%&*{}[]+\/=";
+var chosenCharacters = "";
 
-// Write password to the #password input
+// Function calls for the written password to be stored among the html in the displayed password box
 function writePassword() {
+  chosenCharacters = "";
   var password = generatePassword();
   var passwordText = document.querySelector("#password");
-
-  passwordText.value = password; "abcdefghijklmnopqrstuvwxyz0123456789";
-
+  passwordText.value = password;
 }
 
-// What will be displayed to user
-var prompt = window.prompt("Choose the number of character in your password (8-128)");
-if (prompt < 8) {
-  window.alert("Your password must be at least 8 characters.")
-  return
-}
-if (prompt > 128) {
-  window.alert("Your password must be less than 128 characters.")
-  return
-}
-
-
-var promptUppercase = window.confirm("Would you like to include upper case letters in your password?")
-var promptSpecialcharacters = window.confirm("Would you like to include any special characters in your password?")
-
-
-// Creating a min and max for user experience when generating password
-function display() {
-  displayPassword.textcontent = result;
-
-}
-if (promptUppercase === true && promptSpecialcharacters === true) {
-  for (let i = 0; i < prompt; i++) {
-    var math4 = Math.floor(Math.random() * allCharacters.length);
-    result += allCharacters[math4];
-  }
-}
-else if (promptUppercase === true) {
-  for (let i = 0; i < prompt; i++) {
-    var math3 = Math.floor(Math.random() * allLetters.length);
-    result += allLetters[math3];
-  }
-}
-else if (promptSpecialCharacters === true) {
-  for (let i = 0; i < prompt; i++) {
-    var math2 = Math.floor(Math.random() * allSpecialcharacters.length);
-    result += allSpecialcharacters[math2];
-  }
-else {
-  for (let i = 0; i < prompt; i++) {
-    var math1 = Math.floor(Math.random() * lowerCase.length);
-    result += lowerCase[math1];
-  }
-}
-display()
-
-}
-
-console.log(result);
-
-// Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
+
+function generatePassword() {
+  var result = "";
+  var length = prompt("How many characters in your random password? (between 8 and 128)");
+  if (isNaN(length) || length < 8 || length > 128) {
+    alert("Please choose numbers between 8 - 128!");
+    return generatePassword();
+  }
+  var hasUpper = confirm("Include upper case letters?");
+  var hasLower = confirm("Include lower case letters?");
+  var hasNumbers = confirm("Include numbers?");
+  var hasSpecial = confirm("Include special characters?");
+  if (!hasUpper && !hasLower && !hasNumbers && !hasSpecial) {
+    alert("You must at least choose 1 character type!");
+    return generatePassword();
+  }
+  // if statment checks for the four boolean variables
+  if (hasUpper) {
+    chosenCharacters += upper;
+  }
+  if (hasLower) {
+    chosenCharacters += lower;
+  }
+  if (hasNumbers) {
+    chosenCharacters += numbers;
+  }
+  if (hasSpecial) {
+    chosenCharacters += special;
+  }
+  for (var i = 0; i < length; i++) {
+    result += chosenCharacters.charAt(Math.floor(Math.random() * chosenCharacters.length));
+  }
+  return result;
+}
